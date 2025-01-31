@@ -1,0 +1,22 @@
+{
+<<<<<<< HEAD
+  "name": "todo-week-6",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "middleware": "^1.0.0"
+=======
+  "dependencies": {
+    "commander": "^12.1.0"
+>>>>>>> 24993131eb3252012bca2c1d3d8d883d8007153b
+  }
+}

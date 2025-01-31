@@ -1,0 +1,84 @@
+<html>
+<head>
+    <title>Auth Website</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <script>
+        async function Signup() {
+            const username = document.getElementById("Signup-username").value;
+            const password = document.getElementById("Signup-password").value;
+
+            try {
+                await axios.post("http://localhost:3000/signup", {
+                    username: username,
+                    password: password
+                });
+                alert("Signed up successfully");
+            } catch (error) {
+                alert("Signup failed: " + error.response.data.message);
+            }
+        }
+
+        async function Signin() {
+            const username = document.getElementById("Signin-username").value;
+            const password = document.getElementById("Signin-password").value;
+
+            try {
+                const response = await axios.post("http://localhost:3000/signin", {
+                    username: username,
+                    password: password
+                });
+                localStorage.setItem("token", response.data.token);
+                alert("Signed in successfully");
+            } catch (error) {
+                alert("Signin failed: " + error.response.data.message);
+            }
+        }
+
+        async function getUserInfo() {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                alert("Please sign in first!");
+                return;
+            }
+
+            try {
+                const response = await axios.get("http://localhost:3000/me", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                document.getElementById("Information").innerText = 
+                    `Username: ${response.data.username}, Password: ${response.data.password}`;
+            } catch (error) {
+                alert("Failed to fetch user info: " + error.response.data.message);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            document.getElementById("Information").innerText = "";
+            alert("Logged out successfully");
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <h2>Signup</h2>
+        <input id="Signup-username" type="text" name="username" placeholder="Username">
+        <input id="Signup-password" type="password" name="password" placeholder="Password">
+        <button onclick="Signup()">Submit</button>
+    </div>
+    <div>
+        <h2>Signin</h2>
+        <input id="Signin-username" type="text" name="username" placeholder="Username">
+        <input id="Signin-password" type="password" placeholder="Password">
+        <button onclick="Signin()">Submit</button>
+    </div>
+    <div>
+        <h2>User Information:</h2>
+        <button onclick="getUserInfo()">Get User Info</button>
+        <div id="Information"></div>
+    </div>
+    <div>
+        <button onclick="logout()">Logout</button>
+    </div>
+</body>
+</html>

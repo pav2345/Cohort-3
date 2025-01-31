@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TODO App</title>
+</head>
+<body>
+    <h1>TODO Application</h1>
+    <div>
+        <h2>Sign Up</h2>
+        <input type="text" id="signup-username" placeholder="Username">
+        <input type="password" id="signup-password" placeholder="Password">
+        <button onclick="signup()">Sign Up</button>
+    </div>
+    <div>
+        <h2>Sign In</h2>
+        <input type="text" id="signin-username" placeholder="Username">
+        <input type="password" id="signin-password" placeholder="Password">
+        <button onclick="signin()">Sign In</button>
+    </div>
+    <div>
+        <h2>TODOs</h2>
+        <input type="text" id="todo-task" placeholder="New Task">
+        <button onclick="createTodo()">Add TODO</button>
+        <ul id="todos-list"></ul>
+    </div>
+
+    <script>
+        let token = "pavan_kumar";
+
+        async function signup() {
+            const username = document.getElementById("signup-username").value;
+            const password = document.getElementById("signup-password").value;
+
+            const res = await fetch("/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+            alert(data.message);
+        }
+
+        async function signin() {
+            const username = document.getElementById("signin-username").value;
+            const password = document.getElementById("signin-password").value;
+
+            const res = await fetch("/signin", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+            if (data.token) {
+                token = data.token;
+                alert("Signed in successfully!");
+                loadTodos();
+            } else {
+                alert("Incorrect credentials");
+            }
+        }
+
+        async function createTodo() {
+            const task = document.getElementById("todo-task").value;
+
+            const res = await fetch("/todos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ task })
+            });
+
+            const data = await res.json();
+            alert(data.message);
+            loadTodos();
+        }
+
+        async function loadTodos() {
+            const res = await fetch("/todos", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            const data = await res.json();
+            const todosList = document.getElementById("todos-list");
+            todosList.innerHTML = "";
+
+            data.todos.forEach((todo, index) => {
+                const todoItem = document.createElement("li");
+                todoItem.innerHTML = `${todo.task} - ${todo.done ? "Done" : "Pending"} 
+                                      <button onclick="markAsDone(${index})">Mark as Done</button>
+                                      <button onclick="deleteTodo(${index})">Delete</button>`;
+                todosList.appendChild(todoItem);
+            });
+        }
+
+        async function markAsDone(index) {
+            await fetch(`/todos/${index}`, {
+                method: "PUT",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            loadTodos();
+        }
+
+        async function deleteTodo(index) {
+            await fetch(`/todos/${index}`, {
+                method: "DELETE",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            loadTodos();
+        }
+    </script>
+</body>
+</html>

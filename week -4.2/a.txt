@@ -1,0 +1,9 @@
+Input - node index.js /Users/kirat/file.txt
+<<<<<<< HEAD
+hello world
+=======
+<<<<<<< HEAD
+=======
+hello world
+>>>>>>> d86a55795a7297c10a5173ff0674a64c3e0a0daa
+>>>>>>> a4f8054 (These week 4.2)

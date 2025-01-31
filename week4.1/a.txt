@@ -1,0 +1,2 @@
+Input - node index.js /Users/kirat/file.txt
+hello world
