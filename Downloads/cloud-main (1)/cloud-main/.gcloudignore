@@ -1,0 +1,59 @@
+.git/
+.github/
+# datablue
+cmd/datablue/.git
+cmd/datablue/.gitignore
+cmd/datablue/.circleci
+cmd/datablue/datablue
+cmd/datablue/*~
+cmd/datablue/#*
+cmd/datablue/store/*
+# oceanbench
+cmd/oceanbench/.git
+cmd/oceanbench/.gitignore
+cmd/oceanbench/.circleci
+cmd/oceanbench/oceanbench
+cmd/oceanbench/*~
+cmd/oceanbench/#*
+cmd/oceanbench/store/*
+cmd/oceanbench/node_modules/
+cmd/oceanbench/.stylelintrc.json
+# oceantv
+cmd/oceantv/.git
+cmd/oceantv/.gitignore
+cmd/oceantv/.circleci
+cmd/oceantv/oceantv
+cmd/oceantv/*~
+cmd/oceantv/#*
+cmd/oceantv/store/*
+cmd/oceantv/youtube-api-credentials.json
+# oceancron
+cmd/oceancron/.git
+cmd/oceancron/.gitignore
+cmd/oceancron/.circleci
+cmd/oceancron/oceancron
+cmd/oceancron/*~
+cmd/oceancron/#*
+cmd/oceancron/store/*
+# oceancenter
+cmd/oceancenter/.git
+cmd/oceancenter/.gitignore
+cmd/oceancenter/.circleci
+cmd/oceancenter/oceancenter
+cmd/oceancenter/*~
+cmd/oceancenter/#*
+cmd/oceancenter/store/*
+# vidforward
+cmd/vidforward/.git
+cmd/vidforward/.gitignore
+cmd/vidforward/.circleci
+cmd/vidforward/vidforward
+cmd/vidforward/*~
+cmd/vidforward/#*
+
+cmd/decode/*
+cmd/cloudblue/*
+cmd/oceancast/*
+cmd/roadmap/*
+
+docs/*

@@ -1,0 +1,35 @@
+# gcloud app deploy --version V --project oceanbench oceanbench.yaml
+runtime: go121
+
+env_variables:
+  AUSOCEAN_CREDENTIALS: gs://ausocean/AusOcean-ef9cd79f81a8.json
+  VIDGRIND_CREDENTIALS: gs://ausocean/VideoGrinder-b0ad82abac05.json
+  OCEANBENCH_SECRETS: gs://ausocean/OceanBench-secrets.txt
+  OCEANCRON_SECRETS: gs://ausocean/OceanCron-secrets.txt
+  YOUTUBE_SECRETS: gs://ausocean/YouTube-secrets.json
+  OAUTH2_CALLBACK: https://bench.cloudblue.org/oauth2callback
+  # This OAUTH2_CALLBACK variable is used by the deployment script and should be left commented out.
+  # OAUTH2_CALLBACK: https://dev-dot-oceanbench.ts.r.appspot.com/oauth2callback
+
+main: cmd/oceanbench
+
+handlers:
+  - url: /s/*
+    static_dir: cmd/oceanbench/s
+
+  - url: /favicon\.ico
+    static_files: cmd/oceanbench/favicon.ico
+    upload: cmd/oceanbench/favicon\.ico
+
+  - url: /(api|test).*
+    script: auto
+
+  - url: /.*
+    secure: always
+    script: auto
+
+automatic_scaling:
+  min_instances: 1
+
+inbound_services:
+  - warmup

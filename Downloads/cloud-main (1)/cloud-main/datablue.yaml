@@ -1,0 +1,13 @@
+# gcloud app deploy --project datablue --version 2 datablue.yaml
+runtime: go123
+app_engine_apis: true
+
+env_variables:
+  AUSOCEAN_CREDENTIALS: gs://ausocean/AusOcean-ef9cd79f81a8.json
+  VIDGRIND_CREDENTIALS: gs://ausocean/VideoGrinder-b0ad82abac05.json
+
+main: cmd/datablue
+
+handlers:
+- url: /.*
+  script: auto

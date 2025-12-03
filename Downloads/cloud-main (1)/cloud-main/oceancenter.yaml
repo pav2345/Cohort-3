@@ -1,0 +1,19 @@
+# gcloud app deploy --version 3 --project oceancenter oceancenter.yaml
+runtime: go121
+
+env_variables:
+  AUSOCEAN_CREDENTIALS: gs://ausocean/AusOcean-ef9cd79f81a8.json
+  VIDGRIND_CREDENTIALS: gs://ausocean/VideoGrinder-b0ad82abac05.json
+  OCEANCENTER_SECRETS: gs://ausocean/OceanCenter-secrets.txt
+
+main: cmd/oceancenter
+
+handlers:
+  - url: /s/*
+    static_dir: cmd/oceanbench/s
+
+  - url: /dl/*
+    static_dir: cmd/oceancenter/dl
+
+  - url: /.*
+    script: auto
