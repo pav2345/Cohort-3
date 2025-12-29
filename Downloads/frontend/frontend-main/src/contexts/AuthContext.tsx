@@ -1,6 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import api from '@/lib/axios';
-import { AuthState, User, FoodPartner, LoginData, RegisterUserData, RegisterPartnerData, UserRole } from '@/types';
+import React, { createContext, useContext, useState, useCallback } from "react";
+import api from "@/lib/axios";
+import {
+  AuthState,
+  LoginData,
+  RegisterUserData,
+  RegisterPartnerData
+} from "@/types";
 
 interface AuthContextType extends AuthState {
   loginUser: (data: LoginData) => Promise<void>;
@@ -15,7 +20,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used inside AuthProvider");
   }
   return context;
 };
@@ -25,67 +30,71 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     isAuthenticated: false,
     role: null,
     user: null,
-    partner: null,
+    partner: null
   });
 
+  // USER LOGIN
   const loginUser = useCallback(async (data: LoginData) => {
-    const response = await api.post('/api/auth/user/login', data);
+    const res = await api.post("/api/auth/user/login", data);
+
     setState({
       isAuthenticated: true,
-      role: 'user',
-      user: response.data.user,
-      partner: null,
+      role: "user",
+      user: res.data.user,
+      partner: null
     });
   }, []);
 
+  // FOOD PARTNER LOGIN
   const loginPartner = useCallback(async (data: LoginData) => {
-    const response = await api.post('/api/auth/food-partner/login', data);
+    const res = await api.post("/api/auth/food-partner/login", data);
+
     setState({
       isAuthenticated: true,
-      role: 'foodPartner',
+      role: "foodPartner",
       user: null,
-      partner: response.data.partner,
-      isLoading: false,
+      partner: res.data.foodPartner
     });
   }, []);
 
+  // USER REGISTER
   const registerUser = useCallback(async (data: RegisterUserData) => {
-    const response = await api.post('/api/auth/user/register', data);
+    const res = await api.post("/api/auth/user/register", data);
+
     setState({
       isAuthenticated: true,
-      role: 'user',
-      user: response.data.user,
-      partner: null,
-      isLoading: false,
+      role: "user",
+      user: res.data.user,
+      partner: null
     });
   }, []);
 
+  // FOOD PARTNER REGISTER
   const registerPartner = useCallback(async (data: RegisterPartnerData) => {
-    const response = await api.post('/api/auth/food-partner/register', data);
+    const res = await api.post("/api/auth/food-partner/register", data);
+
     setState({
       isAuthenticated: true,
-      role: 'foodPartner',
+      role: "foodPartner",
       user: null,
-      partner: response.data.partner,
-      isLoading: false,
+      partner: res.data.foodPartner
     });
   }, []);
 
+  // LOGOUT
   const logout = useCallback(async () => {
-    const role = state.role;
     try {
-      if (role === 'user') {
-        await api.get('/api/auth/user/logout');
-      } else if (role === 'foodPartner') {
-        await api.get('/api/auth/food-partner/logout');
+      if (state.role === "user") {
+        await api.get("/api/auth/user/logout");
+      } else if (state.role === "foodPartner") {
+        await api.get("/api/auth/food-partner/logout");
       }
     } finally {
       setState({
         isAuthenticated: false,
         role: null,
         user: null,
-        partner: null,
-        isLoading: false,
+        partner: null
       });
     }
   }, [state.role]);
@@ -98,7 +107,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loginPartner,
         registerUser,
         registerPartner,
-        logout,
+        logout
       }}
     >
       {children}
